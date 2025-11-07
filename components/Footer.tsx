@@ -1,13 +1,21 @@
+'use client';
+
 import Link from 'next/link';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Footer() {
+  const { language, t } = useLanguage();
+
   return (
     <footer className="bg-gray-900 text-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+          {/* Brand Section */}
           <div>
             <h3 className="text-2xl font-bold mb-4 gradient-text">iMigo</h3>
-            <p className="text-gray-400 mb-4 text-sm sm:text-base">用科技溫度,連結台灣與世界</p>
+            <p className="text-gray-400 mb-4 text-sm sm:text-base">
+              {language === 'zh' ? '用科技溫度,連結台灣與世界' : 'Connecting Taiwan and the World with Technology and Warmth'}
+            </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-orange-400 transition-colors" aria-label="Facebook">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -26,46 +34,95 @@ export default function Footer() {
               </a>
             </div>
           </div>
+
+          {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-4 text-sm sm:text-base">快速連結</h4>
+            <h4 className="font-bold mb-4 text-sm sm:text-base">
+              {language === 'zh' ? '快速連結' : 'Quick Links'}
+            </h4>
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-              <li><Link href="/about" className="hover:text-orange-400 transition-colors">關於我們</Link></li>
-              <li><Link href="/services" className="hover:text-orange-400 transition-colors">服務內容</Link></li>
-              <li><Link href="/volunteer" className="hover:text-orange-400 transition-colors">志工招募</Link></li>
-              <li><Link href="#" className="hover:text-orange-400 transition-colors">最新消息</Link></li>
+              <li>
+                <Link href="/#about" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '關於我們' : 'About Us'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '服務內容' : 'Services'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#team" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '核心團隊' : 'Our Team'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '最新消息' : 'News & Events'}
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* Get Involved */}
           <div>
-            <h4 className="font-bold mb-4 text-sm sm:text-base">服務對象</h4>
+            <h4 className="font-bold mb-4 text-sm sm:text-base">
+              {language === 'zh' ? '參與我們' : 'Get Involved'}
+            </h4>
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-              <li><Link href="#" className="hover:text-orange-400 transition-colors">移工朋友</Link></li>
-              <li><Link href="#" className="hover:text-orange-400 transition-colors">志工夥伴</Link></li>
-              <li><Link href="#" className="hover:text-orange-400 transition-colors">合作單位</Link></li>
-              <li><Link href="#" className="hover:text-orange-400 transition-colors">企業贊助</Link></li>
+              <li>
+                <Link href="/#volunteer" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '成為志工' : 'Become a Volunteer'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '聯絡我們' : 'Contact Us'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-orange-400 transition-colors">
+                  {language === 'zh' ? '活動日曆' : 'Event Calendar'}
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* Contact Info */}
           <div>
-            <h4 className="font-bold mb-4 text-sm sm:text-base">聯絡資訊</h4>
+            <h4 className="font-bold mb-4 text-sm sm:text-base">
+              {language === 'zh' ? '聯絡資訊' : 'Contact Info'}
+            </h4>
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-center space-x-2">
                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <span className="text-xs sm:text-sm break-word">imigovolunteer@gmail.com</span>
+                <a href="mailto:imigovolunteer@gmail.com" className="text-xs sm:text-sm break-word hover:text-orange-400 transition-colors">
+                  imigovolunteer@gmail.com
+                </a>
               </li>
               <li className="flex items-center space-x-2">
                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                <span className="text-xs sm:text-sm">台北市松山區</span>
+                <span className="text-xs sm:text-sm">
+                  {language === 'zh' ? '台北市松山區' : 'Songshan District, Taipei'}
+                </span>
               </li>
             </ul>
           </div>
         </div>
+
+        {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm sm:text-base">
-          <p>&copy; 2025 iMigo Volunteer Club. All rights reserved.</p>
-          <p className="mt-2 text-xs sm:text-sm">讓我們一起用青春的力量,為世界帶來改變!</p>
+          <p>&copy; 2025 iMigo Volunteer Club. {language === 'zh' ? '版權所有' : 'All rights reserved'}.</p>
+          <p className="mt-2 text-xs sm:text-sm">
+            {language === 'zh'
+              ? '讓我們一起用青春的力量,為世界帶來改變!'
+              : 'Let\'s bring change to the world with the power of youth!'}
+          </p>
         </div>
       </div>
     </footer>
