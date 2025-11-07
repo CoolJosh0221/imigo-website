@@ -66,6 +66,7 @@ If you want to be a force for change, join the iMigo volunteer team!`
     author: 'iMigo 團隊',
     date: '2025-01-15',
     category: 'announcement',
+    image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=400&fit=crop',
     tags: ['announcement', 'launch', 'about']
   },
   {
@@ -119,6 +120,7 @@ This experience taught me that volunteer service isn't just about helping others
     author: 'Amy',
     date: '2025-01-20',
     category: 'story',
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=400&fit=crop',
     tags: ['volunteer', 'story', 'medical']
   },
   {
@@ -184,6 +186,7 @@ Ready? Fill out the application form now and join our team!`
     author: 'iMigo 團隊',
     date: '2025-01-25',
     category: 'guide',
+    image: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=400&fit=crop',
     tags: ['guide', 'volunteer', 'howto']
   }
 ];
@@ -200,6 +203,11 @@ export function getRecentPosts(limit?: number): BlogPost[] {
 // Helper function to get posts by category
 export function getPostsByCategory(category: BlogPost['category']): BlogPost[] {
   return blogPosts.filter(post => post.category === category);
+}
+
+// Helper function to get post by ID
+export function getPostById(id: string): BlogPost | undefined {
+  return blogPosts.find(post => post.id === id);
 }
 
 // Helper function to format date
