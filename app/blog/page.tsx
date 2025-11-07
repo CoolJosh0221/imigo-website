@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { blogPosts, getRecentPosts, formatBlogDate } from '@/data/blog';
 import { events, getUpcomingEvents, getPastEvents, formatEventDate } from '@/data/events';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function BlogPage() {
@@ -95,37 +96,49 @@ export default function BlogPage() {
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '即將到來的活動' : 'Upcoming Events'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
-                <div key={event.id} className="bg-white rounded-2xl p-6 shadow-lg card-hover">
-                  <div className="flex items-center gap-3 mb-4">
-                    {getCategoryBadge(event.category)}
-                    <span className="text-sm text-gray-600">
-                      {formatEventDate(event.date, language)}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{event.title[language]}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">{event.description[language]}</p>
-                  <div className="space-y-2 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                      </svg>
-                      <span>{event.time}</span>
+                <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                  {event.image && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={event.image}
+                        alt={event.title[language]}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                      </svg>
-                      <span>{event.location[language]}</span>
-                    </div>
-                  </div>
-                  {event.registrationLink && (
-                    <Link
-                      href={event.registrationLink}
-                      className="mt-4 block text-center px-4 py-2 gradient-bg text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-                    >
-                      {language === 'zh' ? '立即報名' : 'Register Now'}
-                    </Link>
                   )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      {getCategoryBadge(event.category)}
+                      <span className="text-sm text-gray-600">
+                        {formatEventDate(event.date, language)}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{event.title[language]}</h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">{event.description[language]}</p>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        </svg>
+                        <span>{event.location[language]}</span>
+                      </div>
+                    </div>
+                    {event.registrationLink && (
+                      <Link
+                        href={event.registrationLink}
+                        className="mt-4 block text-center px-4 py-2 gradient-bg text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+                      >
+                        {language === 'zh' ? '立即報名' : 'Register Now'}
+                      </Link>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -140,22 +153,34 @@ export default function BlogPage() {
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '最新文章' : 'Latest Posts'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentPosts.map((post) => (
-                <div key={post.id} className="bg-white rounded-2xl p-6 shadow-lg card-hover">
-                  <div className="flex items-center gap-3 mb-4">
-                    {getCategoryBadge(post.category)}
-                    <span className="text-sm text-gray-600">
-                      {formatBlogDate(post.date, language)}
-                    </span>
+                <Link key={post.id} href={`/blog/${post.id}`} className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover block">
+                  {post.image && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={post.image}
+                        alt={post.title[language]}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      {getCategoryBadge(post.category)}
+                      <span className="text-sm text-gray-600">
+                        {formatBlogDate(post.date, language)}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{post.title[language]}</h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt[language]}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">{post.author}</span>
+                      <span className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
+                        {language === 'zh' ? '閱讀更多' : 'Read More'} →
+                      </span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{post.title[language]}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt[language]}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{post.author}</span>
-                    <button className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
-                      {language === 'zh' ? '閱讀更多' : 'Read More'} →
-                    </button>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -169,15 +194,27 @@ export default function BlogPage() {
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '過往活動' : 'Past Events'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pastEvents.map((event) => (
-                <div key={event.id} className="bg-white rounded-2xl p-6 shadow-lg opacity-75">
-                  <div className="flex items-center gap-3 mb-4">
-                    {getCategoryBadge(event.category)}
-                    <span className="text-sm text-gray-500">
-                      {formatEventDate(event.date, language)}
-                    </span>
+                <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-lg opacity-75">
+                  {event.image && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={event.image}
+                        alt={event.title[language]}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      {getCategoryBadge(event.category)}
+                      <span className="text-sm text-gray-500">
+                        {formatEventDate(event.date, language)}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{event.title[language]}</h3>
+                    <p className="text-gray-600 mb-4 line-clamp-2">{event.description[language]}</p>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{event.title[language]}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{event.description[language]}</p>
                 </div>
               ))}
             </div>

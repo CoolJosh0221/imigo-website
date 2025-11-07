@@ -39,6 +39,7 @@ export const events: Event[] = [
       zh: '與移工朋友一起慶祝農曆新年,體驗台灣傳統文化,包括包餃子、寫春聯等活動。歡迎所有志工和移工朋友參加!',
       en: 'Celebrate Lunar New Year with migrant friends, experience traditional Taiwanese culture including making dumplings and writing spring couplets. All volunteers and migrant friends welcome!'
     },
+    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=400&fit=crop',
     category: 'cultural',
     registrationLink: '#'
   },
@@ -58,6 +59,7 @@ export const events: Event[] = [
       zh: '新志工培訓課程,學習跨文化溝通技巧、基礎翻譯能力及志工服務須知。完成培訓後即可開始服務!',
       en: 'New volunteer training course covering cross-cultural communication skills, basic translation abilities, and volunteer service guidelines. Start serving after completion!'
     },
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=400&fit=crop',
     category: 'training',
     registrationLink: '#'
   },
@@ -77,6 +79,7 @@ export const events: Event[] = [
       zh: '輕鬆的語言交換活動,台灣志工與移工朋友互相學習中文、英文及其他語言。在公園野餐的同時認識新朋友!',
       en: 'Casual language exchange where Taiwanese volunteers and migrant friends learn Chinese, English and other languages together. Make new friends while picnicking in the park!'
     },
+    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=400&fit=crop',
     category: 'community',
     registrationLink: '#'
   },

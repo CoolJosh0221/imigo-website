@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getUpcomingEvents, formatEventDate, type Event } from '@/data/events';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function EventCarousel() {
   const { language, t } = useLanguage();
@@ -58,33 +59,46 @@ export default function EventCarousel() {
     <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden">
       {/* Carousel Content */}
       <div className="relative h-80 sm:h-96">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-pink-500 opacity-10" />
+        {currentEvent.image ? (
+          <>
+            <Image
+              src={currentEvent.image}
+              alt={currentEvent.title[language]}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-pink-500 opacity-10" />
+        )}
 
-        <div className="relative z-10 p-8 sm:p-12 h-full flex flex-col justify-between">
+        <div className={`relative z-10 p-8 sm:p-12 h-full flex flex-col justify-between ${currentEvent.image ? 'text-white' : ''}`}>
           <div>
             <div className="flex items-center gap-3 mb-4">
               {getCategoryBadge(currentEvent.category)}
-              <span className="text-sm text-gray-600">
+              <span className={`text-sm ${currentEvent.image ? 'text-white/90' : 'text-gray-600'}`}>
                 {formatEventDate(currentEvent.date, language)}
               </span>
             </div>
 
-            <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">
+            <h3 className={`text-2xl sm:text-3xl font-bold mb-4 ${currentEvent.image ? 'text-white' : 'text-gray-900'}`}>
               {currentEvent.title[language]}
             </h3>
 
-            <p className="text-gray-700 mb-4 line-clamp-3">
+            <p className={`mb-4 line-clamp-3 ${currentEvent.image ? 'text-white/90' : 'text-gray-700'}`}>
               {currentEvent.description[language]}
             </p>
 
-            <div className="flex items-center gap-2 text-gray-600 mb-2">
+            <div className={`flex items-center gap-2 mb-2 ${currentEvent.image ? 'text-white/90' : 'text-gray-600'}`}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span className="text-sm">{currentEvent.time}</span>
             </div>
 
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className={`flex items-center gap-2 ${currentEvent.image ? 'text-white/90' : 'text-gray-600'}`}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
