@@ -40,21 +40,21 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            <a href="#home" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               首頁
-            </Link>
-            <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </a>
+            <a href="#about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               關於我們
-            </Link>
-            <Link href="/services" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </a>
+            <a href="#services" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               服務內容
-            </Link>
-            <Link href="/team" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </a>
+            <a href="#team" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               核心團隊
-            </Link>
-            <Link href="/volunteer" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </a>
+            <a href="#volunteer" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               加入志工
-            </Link>
+            </a>
             <Link href="/contact" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               聯絡我們
             </Link>
@@ -76,21 +76,21 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t shadow-lg">
-          <Link href="/" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+          <a href="#home" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             首頁
-          </Link>
-          <Link href="/about" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+          </a>
+          <a href="#about" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             關於我們
-          </Link>
-          <Link href="/services" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+          </a>
+          <a href="#services" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             服務內容
-          </Link>
-          <Link href="/team" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+          </a>
+          <a href="#team" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             核心團隊
-          </Link>
-          <Link href="/volunteer" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+          </a>
+          <a href="#volunteer" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             加入志工
-          </Link>
+          </a>
           <Link href="/contact" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
             聯絡我們
           </Link>
