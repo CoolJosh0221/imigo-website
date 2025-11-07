@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,25 +41,42 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             <a href="#home" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              首頁
+              {t('nav.home')}
             </a>
             <a href="#about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              關於我們
+              {t('nav.about')}
             </a>
             <a href="#services" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              服務內容
+              {t('nav.services')}
             </a>
             <a href="#team" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              核心團隊
+              {t('nav.team')}
             </a>
             <a href="#volunteer" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              加入志工
+              {t('nav.volunteer')}
             </a>
-            <Link href="/contact" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-              聯絡我們
+            <Link href="/blog" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+              {t('nav.blog')}
             </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+              {t('nav.contact')}
+            </Link>
+
+            {/* Language Toggle */}
+            <button
+              onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-100 hover:bg-orange-200 transition-colors"
+              aria-label="Toggle language"
+            >
+              <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+              </svg>
+              <span className="text-sm font-semibold text-orange-600">
+                {language === 'zh' ? 'EN' : '中'}
+              </span>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,23 +96,41 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t shadow-lg">
           <a href="#home" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            首頁
+            {t('nav.home')}
           </a>
           <a href="#about" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            關於我們
+            {t('nav.about')}
           </a>
           <a href="#services" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            服務內容
+            {t('nav.services')}
           </a>
           <a href="#team" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            核心團隊
+            {t('nav.team')}
           </a>
           <a href="#volunteer" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            加入志工
+            {t('nav.volunteer')}
           </a>
-          <Link href="/contact" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-            聯絡我們
+          <Link href="/blog" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+            {t('nav.blog')}
           </Link>
+          <Link href="/contact" className="block px-6 py-3 hover:bg-orange-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+            {t('nav.contact')}
+          </Link>
+
+          {/* Language Toggle for Mobile */}
+          <div className="px-6 py-3 border-t">
+            <button
+              onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-100 hover:bg-orange-200 transition-colors w-full justify-center"
+            >
+              <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+              </svg>
+              <span className="text-sm font-semibold text-orange-600">
+                {language === 'zh' ? 'Switch to English' : '切換到中文'}
+              </span>
+            </button>
+          </div>
         </div>
       )}
     </nav>

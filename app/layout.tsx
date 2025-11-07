@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="zh-TW" className="smooth-scroll">
       <body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">
-        <Navbar />
-        {children}
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
