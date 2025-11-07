@@ -42,21 +42,21 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            <Link href="/#home" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.home')}
-            </a>
-            <a href="#about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </Link>
+            <Link href="/#about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.about')}
-            </a>
-            <a href="#services" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </Link>
+            <Link href="/#services" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.services')}
-            </a>
-            <a href="#team" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </Link>
+            <Link href="/#team" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.team')}
-            </a>
-            <a href="#volunteer" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+            </Link>
+            <Link href="/#volunteer" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.volunteer')}
-            </a>
+            </Link>
             <Link href="/blog" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
               {t('nav.blog')}
             </Link>
