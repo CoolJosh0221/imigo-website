@@ -5,10 +5,12 @@ import { getPostById, formatBlogDate } from '@/data/blog';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { use } from 'react';
 
-export default function BlogPostPage({ params }: { params: { id: string } }) {
+export default function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { language } = useLanguage();
-  const post = getPostById(params.id);
+  const { id } = use(params);
+  const post = getPostById(id);
 
   if (!post) {
     notFound();
