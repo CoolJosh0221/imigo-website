@@ -17,6 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-TW" className="smooth-scroll">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Noto+Sans+TC:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">
         <LanguageProvider>
           <Navbar />
