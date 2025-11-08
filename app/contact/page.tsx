@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Contact() {
+  const { language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,8 +15,10 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    alert('表單已提交！我們會盡快回覆您。');
+    const successMessage = language === 'zh'
+      ? '表單已提交！我們會盡快回覆您。'
+      : 'Form submitted! We will get back to you soon.';
+    alert(successMessage);
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
@@ -31,10 +35,13 @@ export default function Contact() {
       <section className="py-20 px-4 bg-gradient-to-b from-orange-50 to-white">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">聯絡</span>我們
+            <span className="gradient-text">{language === 'zh' ? '聯絡' : 'Contact'}</span>
+            {language === 'zh' ? '我們' : ' Us'}
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600">
-            有任何問題嗎? 歡迎與我們聯繫!
+            {language === 'zh'
+              ? '有任何問題嗎? 歡迎與我們聯繫!'
+              : 'Have any questions? Feel free to contact us!'}
           </p>
         </div>
       </section>
@@ -45,11 +52,13 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6">填寫聯絡表單</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+                {language === 'zh' ? '填寫聯絡表單' : 'Contact Form'}
+              </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                    姓名 <span className="text-red-500">*</span>
+                    {language === 'zh' ? '姓名' : 'Name'} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -59,13 +68,13 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-                    placeholder="請輸入您的姓名"
+                    placeholder={language === 'zh' ? '請輸入您的姓名' : 'Enter your name'}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                    電子郵件 <span className="text-red-500">*</span>
+                    {language === 'zh' ? '電子郵件' : 'Email'} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -81,7 +90,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
-                    主旨 <span className="text-red-500">*</span>
+                    {language === 'zh' ? '主旨' : 'Subject'} <span className="text-red-500">*</span>
                   </label>
                   <select
                     id="subject"
@@ -91,18 +100,30 @@ export default function Contact() {
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
                   >
-                    <option value="">請選擇主旨</option>
-                    <option value="volunteer">志工招募相關</option>
-                    <option value="service">服務申請相關</option>
-                    <option value="cooperation">合作洽談</option>
-                    <option value="feedback">意見回饋</option>
-                    <option value="other">其他問題</option>
+                    <option value="">
+                      {language === 'zh' ? '請選擇主旨' : 'Please select a subject'}
+                    </option>
+                    <option value="volunteer">
+                      {language === 'zh' ? '志工招募相關' : 'Volunteer Recruitment'}
+                    </option>
+                    <option value="service">
+                      {language === 'zh' ? '服務申請相關' : 'Service Application'}
+                    </option>
+                    <option value="cooperation">
+                      {language === 'zh' ? '合作洽談' : 'Partnership Inquiry'}
+                    </option>
+                    <option value="feedback">
+                      {language === 'zh' ? '意見回饋' : 'Feedback'}
+                    </option>
+                    <option value="other">
+                      {language === 'zh' ? '其他問題' : 'Other Questions'}
+                    </option>
                   </select>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                    訊息內容 <span className="text-red-500">*</span>
+                    {language === 'zh' ? '訊息內容' : 'Message'} <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -112,7 +133,7 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition resize-none"
-                    placeholder="請詳細說明您的問題或需求..."
+                    placeholder={language === 'zh' ? '請詳細說明您的問題或需求...' : 'Please describe your question or needs in detail...'}
                   />
                 </div>
 
@@ -120,7 +141,7 @@ export default function Contact() {
                   type="submit"
                   className="w-full px-8 py-4 gradient-bg text-white rounded-lg font-bold hover:shadow-lg transform hover:scale-105 transition-all"
                 >
-                  送出表單
+                  {language === 'zh' ? '送出表單' : 'Submit Form'}
                 </button>
               </form>
             </div>
@@ -128,7 +149,9 @@ export default function Contact() {
             {/* Contact Information */}
             <div className="space-y-8">
               <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 className="text-2xl font-bold mb-6">聯絡資訊</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  {language === 'zh' ? '聯絡資訊' : 'Contact Information'}
+                </h2>
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -137,11 +160,17 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <div className="font-semibold text-lg mb-1">電子信箱</div>
+                      <div className="font-semibold text-lg mb-1">
+                        {language === 'zh' ? '電子信箱' : 'Email'}
+                      </div>
                       <a href="mailto:imigovolunteer@gmail.com" className="text-gray-600 hover:text-orange-600 break-word transition-colors">
                         imigovolunteer@gmail.com
                       </a>
-                      <p className="text-sm text-gray-500 mt-2">我們會在 24-48 小時內回覆您的來信</p>
+                      <p className="text-sm text-gray-500 mt-2">
+                        {language === 'zh'
+                          ? '我們會在 24-48 小時內回覆您的來信'
+                          : 'We will reply to your email within 24-48 hours'}
+                      </p>
                     </div>
                   </div>
 
@@ -153,8 +182,12 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-semibold text-lg mb-1">服務範圍</div>
-                      <div className="text-gray-600">台北市松山區</div>
+                      <div className="font-semibold text-lg mb-1">
+                        {language === 'zh' ? '服務範圍' : 'Service Area'}
+                      </div>
+                      <div className="text-gray-600">
+                        {language === 'zh' ? '台北市松山區' : 'Songshan District, Taipei'}
+                      </div>
                     </div>
                   </div>
 
@@ -165,7 +198,9 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-semibold text-lg mb-1">LINE 官方帳號</div>
+                      <div className="font-semibold text-lg mb-1">
+                        {language === 'zh' ? 'LINE 官方帳號' : 'LINE Official Account'}
+                      </div>
                       <div className="text-gray-600">@imigovolunteer</div>
                     </div>
                   </div>
@@ -173,9 +208,13 @@ export default function Contact() {
               </div>
 
               <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl p-8 border-2 border-orange-200">
-                <h3 className="text-xl font-bold mb-3 text-orange-800">專屬聯絡人</h3>
+                <h3 className="text-xl font-bold mb-3 text-orange-800">
+                  {language === 'zh' ? '專屬聯絡人' : 'Direct Contact'}
+                </h3>
                 <p className="text-gray-700 mb-4">
-                  如需緊急協助或特殊事項,可直接聯繫我們的專屬信箱:
+                  {language === 'zh'
+                    ? '如需緊急協助或特殊事項,可直接聯繫我們的專屬信箱:'
+                    : 'For urgent assistance or special matters, contact our dedicated email:'}
                 </p>
                 <div className="bg-white rounded-lg p-4 break-word">
                   <a href="mailto:contact@imigo.org.tw" className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
@@ -183,12 +222,16 @@ export default function Contact() {
                   </a>
                 </div>
                 <p className="text-sm text-gray-600 mt-3">
-                  * 此為範例信箱,實際聯絡請使用上方表單或主要信箱
+                  {language === 'zh'
+                    ? '* 此為範例信箱,實際聯絡請使用上方表單或主要信箱'
+                    : '* This is a sample email, please use the form above or main email'}
                 </p>
               </div>
 
               <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <h3 className="text-xl font-bold mb-4">社群媒體</h3>
+                <h3 className="text-xl font-bold mb-4">
+                  {language === 'zh' ? '社群媒體' : 'Social Media'}
+                </h3>
                 <div className="flex space-x-4">
                   <a href="#" className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
                     <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
@@ -222,7 +265,7 @@ export default function Contact() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            <span>返回首頁</span>
+            <span>{language === 'zh' ? '返回首頁' : 'Back to Home'}</span>
           </Link>
         </div>
       </section>
