@@ -3,6 +3,7 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatBlogDate } from '@/lib/blog-utils';
 import { formatEventDate, type Event } from '@/data/events';
+import { analytics } from '@/lib/analytics';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -27,6 +28,20 @@ interface BlogPageClientProps {
 export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents }: BlogPageClientProps) {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'all' | 'events' | 'blog'>('all');
+
+  const handleTabSwitch = (tab: 'all' | 'events' | 'blog') => {
+    setActiveTab(tab);
+    analytics.trackTabSwitch(tab, language);
+  };
+
+  const handleEventRegistration = (event: Event) => {
+    analytics.trackEventRegistration(
+      event.id,
+      event.title[language],
+      event.category,
+      language
+    );
+  };
 
   const getCategoryBadge = (category: string) => {
     const badges: any = {
@@ -69,7 +84,7 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
         <div className="max-w-7xl mx-auto">
           <div className="flex gap-4 justify-center">
             <button
-              onClick={() => setActiveTab('all')}
+              onClick={() => handleTabSwitch('all')}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === 'all'
                   ? 'gradient-bg text-white shadow-lg'
@@ -79,7 +94,7 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
               {language === 'zh' ? '全部' : 'All'}
             </button>
             <button
-              onClick={() => setActiveTab('events')}
+              onClick={() => handleTabSwitch('events')}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === 'events'
                   ? 'gradient-bg text-white shadow-lg'
@@ -89,7 +104,7 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
               {language === 'zh' ? '活動日曆' : 'Events'}
             </button>
             <button
-              onClick={() => setActiveTab('blog')}
+              onClick={() => handleTabSwitch('blog')}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === 'blog'
                   ? 'gradient-bg text-white shadow-lg'
@@ -146,6 +161,7 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
                     {event.registrationLink && (
                       <Link
                         href={event.registrationLink}
+                        onClick={() => handleEventRegistration(event)}
                         className="mt-4 block text-center px-4 py-2 gradient-bg text-white rounded-lg font-semibold hover:shadow-lg transition-all"
                       >
                         {language === 'zh' ? '立即報名' : 'Register Now'}

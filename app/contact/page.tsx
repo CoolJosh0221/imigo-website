@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 import emailjs from '@emailjs/browser';
 
 export default function Contact() {
@@ -51,6 +52,9 @@ export default function Contact() {
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
 
+      // Track successful form submission
+      analytics.trackContactFormSubmit('success', language);
+
       // Auto-hide success message after 5 seconds
       setTimeout(() => {
         setSubmitStatus(null);
@@ -58,6 +62,9 @@ export default function Contact() {
     } catch (error) {
       console.error('EmailJS Error:', error);
       setSubmitStatus('error');
+
+      // Track failed form submission
+      analytics.trackContactFormSubmit('error', language);
 
       // Auto-hide error message after 5 seconds
       setTimeout(() => {
