@@ -1,5 +1,5 @@
 // Unified content system - combines blog posts and events
-import { Event, events } from '@/data/events';
+import { Event, getAllEvents } from './events';
 import { BlogPost, getAllPosts as getBlogPosts, getAllTags as getBlogTags, getTagCounts as getBlogTagCounts } from './blog';
 
 // Convert an event to a blog post format
@@ -15,7 +15,7 @@ export function eventToBlogPost(event: Event): BlogPost {
     id: `event-${event.id}`,
     title: event.title,
     excerpt: event.description, // Use description as excerpt
-    content: {
+    content: event.content || {
       zh: `# ${event.title.zh}
 
 **時間:** ${event.time}
@@ -37,13 +37,14 @@ ${event.registrationLink ? `[Register Now](${event.registrationLink})` : ''}`
     date: event.date,
     category: categoryMap[event.category] || 'news',
     image: event.image,
-    tags: event.tags || ['event', event.category]
+    tags: event.tags
   };
 }
 
 // Get all events as blog posts
 export function getEventsAsPosts(): BlogPost[] {
-  return events.map(eventToBlogPost);
+  const allEvents = getAllEvents();
+  return allEvents.map(eventToBlogPost);
 }
 
 // Get all content (blog posts + events)
@@ -66,15 +67,10 @@ export function getRecentContent(limit?: number): BlogPost[] {
 export function getAllTags(): string[] {
   const blogTags = getBlogTags();
   const eventTags = new Set<string>();
+  const allEvents = getAllEvents();
 
-  events.forEach(event => {
-    if (event.tags) {
-      event.tags.forEach(tag => eventTags.add(tag));
-    } else {
-      // Default tags if none specified
-      eventTags.add('event');
-      eventTags.add(event.category);
-    }
+  allEvents.forEach(event => {
+    event.tags.forEach(tag => eventTags.add(tag));
   });
 
   const allTags = new Set([...blogTags, ...eventTags]);
@@ -85,10 +81,10 @@ export function getAllTags(): string[] {
 export function getTagCounts(): Record<string, number> {
   const blogTagCounts = getBlogTagCounts();
   const tagCounts = { ...blogTagCounts };
+  const allEvents = getAllEvents();
 
-  events.forEach(event => {
-    const tags = event.tags || ['event', event.category];
-    tags.forEach(tag => {
+  allEvents.forEach(event => {
+    event.tags.forEach(tag => {
       tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
   });
@@ -119,5 +115,6 @@ export function getEventFromPostId(postId: string): Event | null {
   if (!isEvent(postId)) return null;
 
   const eventId = postId.replace('event-', '');
-  return events.find(event => event.id === eventId) || null;
+  const allEvents = getAllEvents();
+  return allEvents.find(event => event.id === eventId) || null;
 }

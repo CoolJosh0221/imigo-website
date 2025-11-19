@@ -1,5 +1,5 @@
 import { getRecentContent, getAllTags, getTagCounts } from '@/lib/content';
-import { getUpcomingEvents, getPastEvents } from '@/data/events';
+import { getUpcomingEvents, getPastEvents } from '@/lib/events';
 import BlogPageClient from '@/components/BlogPageClient';
 
 export default function BlogPage() {
