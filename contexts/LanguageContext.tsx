@@ -85,7 +85,7 @@ const translations = {
     },
     about: {
       title: '關於 iMigo',
-      subtitle: 'i = intelligent + international | Migo = Amigo (朋友)',
+      subtitle: 'i = intelligent + international\nMigo = Amigo (朋友)',
       mission: {
         title: '我們的使命',
         content: '建立連結台灣與世界的橋樑,透過科技與實際行動,幫助來自世界各地的朋友更好地融入台灣生活。'
@@ -168,7 +168,7 @@ const translations = {
     },
     about: {
       title: 'About iMigo',
-      subtitle: 'i = intelligent + international | Migo = Amigo (friend)',
+      subtitle: 'i = intelligent + international\nMigo = Amigo (friend)',
       mission: {
         title: 'Our Mission',
         content: 'Building bridges between Taiwan and the world through technology and action, helping friends from around the globe integrate better into Taiwanese life.'
