@@ -2,11 +2,9 @@
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatBlogDate } from '@/lib/blog-utils';
-import { analytics } from '@/lib/analytics';
 import Link from 'next/link';
 import Image from 'next/image';
 import BlogPostContent from '@/components/BlogPostContent';
-import { useEffect } from 'react';
 
 interface BlogPost {
   id: string;
@@ -22,11 +20,6 @@ interface BlogPost {
 
 export default function BlogPostClient({ post }: { post: BlogPost }) {
   const { language } = useLanguage();
-
-  // Track blog post read
-  useEffect(() => {
-    analytics.trackBlogRead(post.id, post.title[language], post.category, language);
-  }, [post.id, post.title, post.category, language]);
 
   const getCategoryBadge = (category: string) => {
     const badges: any = {
