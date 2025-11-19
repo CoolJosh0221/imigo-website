@@ -59,12 +59,6 @@ export default function BlogPageClient({
     filteredPosts = filteredPosts.filter(post => !post.id.startsWith('event-'));
   }
 
-  // In 'events' tab, exclude past events from posts section since they're shown separately
-  if (activeTab === 'events') {
-    const pastEventIds = new Set(past.map(e => `event-${e.id}`));
-    filteredPosts = filteredPosts.filter(post => !pastEventIds.has(post.id));
-  }
-
   const handleTagClick = (tag: string) => {
     setSelectedTag(selectedTag === tag ? null : tag);
   };
@@ -223,61 +217,6 @@ export default function BlogPageClient({
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Blog Posts in Events Tab */}
-      {activeTab === 'events' && filteredPosts.length > 0 && (
-        <section className="py-12 px-4 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '最新文章' : 'Latest Posts'}</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPosts.map((post) => (
-                <Link key={post.id} href={`/blog/${post.id}`} className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover block">
-                  {post.image && (
-                    <div className="relative w-full h-48">
-                      <Image
-                        src={post.image}
-                        alt={post.title[language]}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      {getCategoryBadge(post.category)}
-                      <span className="text-sm text-gray-600">
-                        {formatBlogDate(post.date, language)}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3">{post.title[language]}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt[language]}</p>
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {post.tags.slice(0, 3).map((tag) => (
-                          <span key={tag} className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded">
-                            {tag}
-                          </span>
-                        ))}
-                        {post.tags.length > 3 && (
-                          <span className="text-xs px-2 py-1 text-gray-500">
-                            +{post.tags.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{post.author}</span>
-                      <span className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
-                        {language === 'zh' ? '閱讀更多' : 'Read More'} →
-                      </span>
-                    </div>
-                  </div>
-                </Link>
               ))}
             </div>
           </div>
