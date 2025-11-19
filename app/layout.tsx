@@ -3,7 +3,6 @@ import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AnalyticsProvider from "@/components/AnalyticsProvider";
 
 export const metadata: Metadata = {
 	title: 'iMigo 志工平台 - 用科技溫度,連結台灣與世界',
@@ -27,13 +26,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">
-        <AnalyticsProvider>
-          <LanguageProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </LanguageProvider>
-        </AnalyticsProvider>
+        <LanguageProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
