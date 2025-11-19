@@ -124,5 +124,61 @@ export function getPostsByCategory(category: BlogPost['category']): BlogPost[] {
   return getAllPosts().filter(post => post.category === category);
 }
 
+// Get posts by tag
+export function getPostsByTag(tag: string): BlogPost[] {
+  return getAllPosts().filter(post =>
+    post.tags.some(t => t.toLowerCase() === tag.toLowerCase())
+  );
+}
+
+// Get all unique tags from all posts
+export function getAllTags(): string[] {
+  const posts = getAllPosts();
+  const tagSet = new Set<string>();
+
+  posts.forEach(post => {
+    post.tags.forEach(tag => tagSet.add(tag));
+  });
+
+  return Array.from(tagSet).sort();
+}
+
+// Get tag counts (for tag cloud)
+export function getTagCounts(): Record<string, number> {
+  const posts = getAllPosts();
+  const tagCounts: Record<string, number> = {};
+
+  posts.forEach(post => {
+    post.tags.forEach(tag => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+
+  return tagCounts;
+}
+
+// Get related posts by shared tags
+export function getRelatedPosts(postId: string, limit: number = 3): BlogPost[] {
+  const currentPost = getPostById(postId);
+  if (!currentPost) return [];
+
+  const allPosts = getAllPosts().filter(post => post.id !== postId);
+
+  // Calculate relevance score based on shared tags
+  const postsWithScore = allPosts.map(post => {
+    const sharedTags = post.tags.filter(tag =>
+      currentPost.tags.includes(tag)
+    ).length;
+    return { post, score: sharedTags };
+  });
+
+  // Sort by score (descending) and return limited results
+  return postsWithScore
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.post);
+}
+
 // Re-export from utils for convenience
 export { formatBlogDate } from './blog-utils';

@@ -6,6 +6,7 @@ import { formatEventDate, type Event } from '@/data/events';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import TagCloud from './TagCloud';
 
 interface BlogPost {
   id: string;
@@ -19,14 +20,43 @@ interface BlogPost {
 }
 
 interface BlogPageClientProps {
-  recentPosts: BlogPost[];
-  upcomingEvents: Event[];
-  pastEvents: Event[];
+  recentPosts?: BlogPost[];
+  upcomingEvents?: Event[];
+  pastEvents?: Event[];
+  initialPosts?: BlogPost[];
+  initialEvents?: Event[];
+  showTabs?: boolean;
+  allTags?: string[];
+  tagCounts?: Record<string, number>;
 }
 
-export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents }: BlogPageClientProps) {
+export default function BlogPageClient({
+  recentPosts = [],
+  upcomingEvents = [],
+  pastEvents = [],
+  initialPosts = [],
+  initialEvents = [],
+  showTabs = true,
+  allTags = [],
+  tagCounts = {}
+}: BlogPageClientProps) {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'all' | 'events' | 'blog'>('all');
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  // Use provided data or defaults
+  const posts = recentPosts.length > 0 ? recentPosts : initialPosts;
+  const upcoming = upcomingEvents.length > 0 ? upcomingEvents : initialEvents.filter(e => new Date(e.date) >= new Date());
+  const past = pastEvents.length > 0 ? pastEvents : initialEvents.filter(e => new Date(e.date) < new Date());
+
+  // Filter posts by selected tag
+  const filteredPosts = selectedTag
+    ? posts.filter(post => post.tags.some(tag => tag.toLowerCase() === selectedTag.toLowerCase()))
+    : posts;
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTag(selectedTag === tag ? null : tag);
+  };
 
   const getCategoryBadge = (category: string) => {
     const badges: any = {
@@ -65,42 +95,71 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
       </section>
 
       {/* Tabs */}
-      <section className="py-8 px-4 bg-white border-b sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => setActiveTab('all')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'all'
-                  ? 'gradient-bg text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {language === 'zh' ? '全部' : 'All'}
-            </button>
-            <button
-              onClick={() => setActiveTab('events')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'events'
-                  ? 'gradient-bg text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {language === 'zh' ? '活動日曆' : 'Events'}
-            </button>
-            <button
-              onClick={() => setActiveTab('blog')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'blog'
-                  ? 'gradient-bg text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {language === 'zh' ? '部落格' : 'Blog Posts'}
-            </button>
+      {showTabs && (
+        <section className="py-8 px-4 bg-white border-b sticky top-20 z-40">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={() => setActiveTab('all')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'all'
+                    ? 'gradient-bg text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {language === 'zh' ? '全部' : 'All'}
+              </button>
+              <button
+                onClick={() => setActiveTab('events')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'events'
+                    ? 'gradient-bg text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {language === 'zh' ? '活動日曆' : 'Events'}
+              </button>
+              <button
+                onClick={() => setActiveTab('blog')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'blog'
+                    ? 'gradient-bg text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {language === 'zh' ? '部落格' : 'Blog Posts'}
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Tag Filter */}
+      {allTags.length > 0 && (
+        <section className="py-6 px-4 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {language === 'zh' ? '按標籤篩選' : 'Filter by Tags'}
+              </h3>
+              {selectedTag && (
+                <button
+                  onClick={() => setSelectedTag(null)}
+                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  {language === 'zh' ? '清除篩選' : 'Clear Filter'}
+                </button>
+              )}
+            </div>
+            <TagCloud
+              tags={allTags}
+              tagCounts={tagCounts}
+              onTagClick={handleTagClick}
+              selectedTag={selectedTag || undefined}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Upcoming Events */}
       {(activeTab === 'all' || activeTab === 'events') && upcomingEvents.length > 0 && (
@@ -160,12 +219,12 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
       )}
 
       {/* Blog Posts in Events Tab */}
-      {activeTab === 'events' && recentPosts.length > 0 && (
+      {activeTab === 'events' && filteredPosts.length > 0 && (
         <section className="py-12 px-4 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '最新文章' : 'Latest Posts'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentPosts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.id}`} className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover block">
                   {post.image && (
                     <div className="relative w-full h-48">
@@ -186,6 +245,20 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
                     </div>
                     <h3 className="text-xl font-bold mb-3">{post.title[language]}</h3>
                     <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt[language]}</p>
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                        {post.tags.length > 3 && (
+                          <span className="text-xs px-2 py-1 text-gray-500">
+                            +{post.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">{post.author}</span>
                       <span className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
@@ -206,7 +279,7 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '最新文章' : 'Latest Posts'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentPosts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.id}`} className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover block">
                   {post.image && (
                     <div className="relative w-full h-48">
@@ -227,6 +300,20 @@ export default function BlogPageClient({ recentPosts, upcomingEvents, pastEvents
                     </div>
                     <h3 className="text-xl font-bold mb-3">{post.title[language]}</h3>
                     <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt[language]}</p>
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                        {post.tags.length > 3 && (
+                          <span className="text-xs px-2 py-1 text-gray-500">
+                            +{post.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">{post.author}</span>
                       <span className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">

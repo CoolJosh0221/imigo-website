@@ -20,6 +20,7 @@ export interface Event {
   image?: string; // Optional image URL
   category: 'volunteer' | 'cultural' | 'training' | 'community';
   registrationLink?: string;
+  tags?: string[]; // Optional tags for categorization
 }
 
 export const events: Event[] = [
@@ -41,7 +42,8 @@ export const events: Event[] = [
     },
     image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=400&fit=crop',
     category: 'cultural',
-    registrationLink: '#'
+    registrationLink: '#',
+    tags: ['cultural-exchange', 'lunar-new-year', 'festival', 'event']
   },
   {
     id: '2',
@@ -61,7 +63,8 @@ export const events: Event[] = [
     },
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=400&fit=crop',
     category: 'training',
-    registrationLink: '#'
+    registrationLink: '#',
+    tags: ['volunteer', 'training', 'workshop', 'online', 'event']
   },
   {
     id: '3',
@@ -81,7 +84,8 @@ export const events: Event[] = [
     },
     image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=400&fit=crop',
     category: 'community',
-    registrationLink: '#'
+    registrationLink: '#',
+    tags: ['language-exchange', 'community', 'social', 'outdoor', 'event']
   },
   {
     id: '4',
@@ -100,7 +104,8 @@ export const events: Event[] = [
       en: 'Learn how to become a medical accompaniment volunteer, assisting migrant friends with translation and support during medical visits. Basic foreign language skills required.'
     },
     category: 'volunteer',
-    registrationLink: '#'
+    registrationLink: '#',
+    tags: ['volunteer', 'medical', 'orientation', 'online', 'event']
   }
 ];
 

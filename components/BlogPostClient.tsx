@@ -18,7 +18,12 @@ interface BlogPost {
   tags: string[];
 }
 
-export default function BlogPostClient({ post }: { post: BlogPost }) {
+interface BlogPostClientProps {
+  post: BlogPost;
+  relatedPosts?: BlogPost[];
+}
+
+export default function BlogPostClient({ post, relatedPosts = [] }: BlogPostClientProps) {
   const { language } = useLanguage();
 
   const getCategoryBadge = (category: string) => {
@@ -99,18 +104,68 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
             <div className="mt-12 pt-8 border-t">
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm"
+                    href={`/tags/${encodeURIComponent(tag)}`}
+                    className="px-4 py-2 bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 rounded-full text-sm hover:from-indigo-100 hover:to-purple-100 transition-all"
                   >
                     #{tag}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>
           )}
         </div>
       </article>
+
+      {/* Related Posts */}
+      {relatedPosts.length > 0 && (
+        <section className="py-12 px-4 bg-gray-50">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center">
+              {language === 'zh' ? '相關文章' : 'Related Posts'}
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <Link
+                  key={relatedPost.id}
+                  href={`/blog/${relatedPost.id}`}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  {relatedPost.image && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={relatedPost.image}
+                        alt={relatedPost.title[language]}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2 line-clamp-2">
+                      {relatedPost.title[language]}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                      {relatedPost.excerpt[language]}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {relatedPost.tags.slice(0, 2).map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20 px-4 gradient-bg">
