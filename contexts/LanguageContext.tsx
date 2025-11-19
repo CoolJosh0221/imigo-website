@@ -68,7 +68,7 @@ const translations = {
     },
     hero: {
       tagline: '用科技溫度,連結台灣與世界',
-      title1: "青春的力量並不微小，",
+      title1: "青春的力量並不微小",
       title2_actions: '行動',
       title2_answer: '答案',
       title2_1: '我們的 ',
