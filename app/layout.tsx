@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import type { Metadata } from 'next';
+import './globals.css';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
 	title: 'iMigo 志工平台 - 用科技溫度,連結台灣與世界',
@@ -15,23 +15,20 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="zh-TW" className="smooth-scroll">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Noto+Sans+TC:wght@100..900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">
-        <LanguageProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </LanguageProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="zh-TW" className="smooth-scroll">
+			<head>
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				<link href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+			</head>
+			<body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">
+				<LanguageProvider>
+					<Navbar />
+					{children}
+					<Footer />
+				</LanguageProvider>
+			</body>
+		</html>
+	);
 }
