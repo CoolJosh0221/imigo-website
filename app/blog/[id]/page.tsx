@@ -1,4 +1,4 @@
-import { getPostById, getAllPostIds } from '@/lib/blog';
+import { getPostById, getAllPostIds, getRelatedPosts } from '@/lib/blog';
 import { notFound } from 'next/navigation';
 import BlogPostClient from '@/components/BlogPostClient';
 
@@ -15,5 +15,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
     notFound();
   }
 
-  return <BlogPostClient post={post} />;
+  // Get related posts by shared tags
+  const relatedPosts = getRelatedPosts(id, 3);
+
+  return <BlogPostClient post={post} relatedPosts={relatedPosts} />;
 }
