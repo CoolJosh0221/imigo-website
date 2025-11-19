@@ -85,7 +85,8 @@ const translations = {
     },
     about: {
       title: '關於 iMigo',
-      subtitle: 'i = intelligent + international\nMigo = Amigo (朋友)',
+      subtitle1: 'i = intelligent + international',
+      subtitle2: 'Migo = Amigo (朋友)',
       mission: {
         title: '我們的使命',
         content: '建立連結台灣與世界的橋樑,透過科技與實際行動,幫助來自世界各地的朋友更好地融入台灣生活。'
@@ -121,7 +122,7 @@ const translations = {
     },
     team: {
       title: '核心團隊',
-      subtitle: ' 只要願意「舉手+點擊」\n就能用一支手機、一句問候，為世界帶來「溫度」'
+      subtitle: ' 只要願意「舉手+點擊」\n 就能用一支手機、一句問候，為世界帶來「溫度」'
     },
     volunteerCTA: {
       title: '準備好成為改變的力量了嗎?',
@@ -168,7 +169,8 @@ const translations = {
     },
     about: {
       title: 'About iMigo',
-      subtitle: 'i = intelligent + international\nMigo = Amigo (friend)',
+      subtitle1: 'i = intelligent + international',
+      subtitle2: 'Migo = Amigo (friend)',
       mission: {
         title: 'Our Mission',
         content: 'Building bridges between Taiwan and the world through technology and action, helping friends from around the globe integrate better into Taiwanese life.'

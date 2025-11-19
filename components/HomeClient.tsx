@@ -95,7 +95,7 @@ export default function HomeClient({ upcomingEvents }: HomeClientProps) {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t('about.title')}</h2>
-            <p className="text-lg sm:text-xl text-gray-600">{t('about.subtitle')}</p>
+            <p className="text-lg sm:text-xl text-gray-600">{t('about.subtitle1')}<br/>{t('about.subtitle2')}</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg card-hover">
