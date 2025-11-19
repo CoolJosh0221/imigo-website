@@ -17,8 +17,8 @@ export default function Home() {
 						<div className="space-y-6">
 							<div className="inline-block px-4 py-2 bg-orange-100 rounded-full text-orange-600 text-sm font-semibold">{t('hero.tagline')}</div>
 							<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
-								{t('hero.title1')} <span className="gradient-text">{t('hero.hello')}</span>,<br />
-								{t('hero.title2')} <span className="text-blue-600">{t('hero.nihao')}</span>
+								{t('hero.title1')}<br />
+								{t('hero.title2_1')}<span className="gradient-text">{t('hero.title2_actions')}</span>{t('hero.title2_2')}<span className="text-blue-600">{t('hero.title2_answer')}</span>
 							</h1>
 							<p className="text-lg sm:text-xl text-gray-600 leading-relaxed">{t('hero.description')}</p>
 							<div className="flex flex-col sm:flex-row gap-4">
@@ -170,13 +170,12 @@ export default function Home() {
 						<h2 className="text-3xl sm:text-4xl font-bold mb-4">{t('team.title')}</h2>
 						<p className="text-lg sm:text-xl text-gray-600">{t('team.subtitle')}</p>
 					</div>
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 sm:gap-8">
 						{/* Team Members */}
 						{[
-							{ initial: 'J', name: 'Josh', role: language === 'zh' ? '技術總監' : 'Tech Director', desc: language === 'zh' ? 'AI 開發 | APCS 滿級分' : 'AI Dev | APCS Perfect Score' },
-							{ initial: 'C', name: 'COCO', role: language === 'zh' ? '溝通策略長' : 'Communication Strategy', desc: language === 'zh' ? '國際辯論 | 權益保護' : 'Debate | Rights Protection' },
-							{ initial: 'P', name: 'Phil', role: language === 'zh' ? '產品設計師' : 'Product Designer', desc: language === 'zh' ? 'UX設計 | 法律諮詢' : 'UX Design | Legal' },
-							{ initial: 'Q', name: 'Quentin', role: language === 'zh' ? '營運總監' : 'Operations Director', desc: language === 'zh' ? '商業策略 | 用戶研究' : 'Business | User Research' },
+							{ initial: 'J', name: 'Josh', role: language === 'zh' ? 'AI 開發' : 'AI Dev', desc: language === 'zh' ? '模型訓練 | 數據分析' : 'Model Training | Data Analysis' },
+							{ initial: 'C', name: 'COCO', role: language === 'zh' ? '溝通策略' : 'Communication Strategy', desc: language === 'zh' ? '國際辯論 | 權益保護' : 'Debate | Rights Protection' },
+							{ initial: 'Q', name: 'Quentin', role: language === 'zh' ? '營運' : 'Operations', desc: language === 'zh' ? '商業策略 | 用戶研究' : 'Business Strategy | User Research' },
 						].map((member) => (
 							<div key={member.name} className="bg-white rounded-2xl p-6 text-center shadow-lg card-hover">
 								<div className="w-20 h-20 sm:w-24 sm:h-24 gradient-bg rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-lg">{member.initial}</div>

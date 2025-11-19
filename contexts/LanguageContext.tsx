@@ -68,10 +68,11 @@ const translations = {
     },
     hero: {
       tagline: '用科技溫度,連結台灣與世界',
-      title1: '當我們說',
-      hello: 'Hello',
-      title2: '也說',
-      nihao: '你好',
+      title1: "青春的力量並不微小，",
+      title2_actions: '行動',
+      title2_answer: '答案',
+      title2_1: '我們的 ',
+      title2_2: ' 就是 ',
       description: '我們是一群充滿熱情的高中生,透過 AI 科技與志工服務,幫助來自世界各地的朋友更好地融入台灣生活。',
       joinButton: '立即加入志工',
       learnMore: '了解更多'
@@ -120,7 +121,7 @@ const translations = {
     },
     team: {
       title: '核心團隊',
-      subtitle: '五位改變世界的高中生'
+      subtitle: '三位改變世界的高中生'
     },
     volunteerCTA: {
       title: '準備好成為改變的力量了嗎?',
@@ -150,10 +151,11 @@ const translations = {
     },
     hero: {
       tagline: 'Connecting Taiwan and the World with Technology and Warmth',
-      title1: 'When we say',
-      hello: 'Hello',
-      title2: 'we also say',
-      nihao: '你好',
+      title1: "Youth's power is anything but insignificant,",
+      title2_actions: 'actions',
+      title2_answer: 'answer',
+      title2_1: 'Our ',
+      title2_2: ' dictate the ',
       description: 'We are a group of passionate high school students using AI technology and volunteer services to help friends from around the world integrate better into life in Taiwan.',
       joinButton: 'Join as Volunteer',
       learnMore: 'Learn More'
@@ -202,7 +204,7 @@ const translations = {
     },
     team: {
       title: 'Core Team',
-      subtitle: 'Five High School Students Changing the World'
+      subtitle: 'Three High School Students who Change the World'
     },
     volunteerCTA: {
       title: 'Ready to Become a Force for Change?',
