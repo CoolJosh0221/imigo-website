@@ -2,11 +2,39 @@
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatBlogDate } from '@/lib/blog-utils';
-import { formatEventDate, type Event } from '@/data/events';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import TagCloud from './TagCloud';
+
+// Event type (duplicated to avoid importing from server-only module)
+export interface Event {
+  id: string;
+  title: { zh: string; en: string };
+  date: string;
+  time: string;
+  location: { zh: string; en: string };
+  description: { zh: string; en: string };
+  image?: string;
+  category: 'volunteer' | 'cultural' | 'training' | 'community';
+  registrationLink?: string;
+  tags: string[];
+}
+
+// Format event date for display
+function formatEventDate(dateString: string, language: 'zh' | 'en'): string {
+  const date = new Date(dateString);
+
+  if (language === 'zh') {
+    return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+  } else {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+}
 
 interface BlogPost {
   id: string;

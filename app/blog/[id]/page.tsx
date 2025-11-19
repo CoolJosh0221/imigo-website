@@ -1,6 +1,6 @@
 import { getPostById, getAllPostIds, getRelatedPosts as getBlogRelatedPosts } from '@/lib/blog';
 import { getEventFromPostId, eventToBlogPost, getAllContent } from '@/lib/content';
-import { events } from '@/data/events';
+import { getAllEvents } from '@/lib/events';
 import { notFound } from 'next/navigation';
 import BlogPostClient from '@/components/BlogPostClient';
 
@@ -9,6 +9,7 @@ export async function generateStaticParams() {
   const blogIds = getAllPostIds();
 
   // Get event IDs (as "event-{id}")
+  const events = getAllEvents();
   const eventIds = events.map(event => `event-${event.id}`);
 
   // Combine both

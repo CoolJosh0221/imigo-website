@@ -1,19 +1,34 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getUpcomingEvents, formatEventDate, type Event } from '@/data/events';
+import type { Event } from '@/lib/events';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function EventCarousel() {
+// Format event date for display
+function formatEventDate(dateString: string, language: 'zh' | 'en'): string {
+  const date = new Date(dateString);
+
+  if (language === 'zh') {
+    return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+  } else {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+}
+
+interface EventCarouselProps {
+  events: Event[];
+}
+
+export default function EventCarousel({ events: initialEvents }: EventCarouselProps) {
   const { language, t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [events, setEvents] = useState<Event[]>([]);
-
-  useEffect(() => {
-    setEvents(getUpcomingEvents(3)); // Show max 3 upcoming events
-  }, []);
+  const events = initialEvents.slice(0, 3); // Show max 3 upcoming events
 
   useEffect(() => {
     if (events.length === 0) return;
