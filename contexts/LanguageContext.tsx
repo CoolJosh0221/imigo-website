@@ -121,7 +121,7 @@ const translations = {
     },
     team: {
       title: '核心團隊',
-      subtitle: '三位改變世界的高中生'
+      subtitle: ' 只要願意「舉手+點擊」\n就能用一支手機、一句問候，為世界帶來「溫度」'
     },
     volunteerCTA: {
       title: '準備好成為改變的力量了嗎?',
@@ -204,7 +204,7 @@ const translations = {
     },
     team: {
       title: 'Core Team',
-      subtitle: 'Three High School Students who Change the World'
+      subtitle: 'A simple greeting, sent via your phone, radiates warmth across the world.'
     },
     volunteerCTA: {
       title: 'Ready to Become a Force for Change?',

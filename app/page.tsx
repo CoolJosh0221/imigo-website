@@ -18,7 +18,7 @@ export default function Home() {
 							<div className="inline-block px-4 py-2 bg-orange-100 rounded-full text-orange-600 text-sm font-semibold">{t('hero.tagline')}</div>
 							<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
 								{t('hero.title1')}<br />
-								{t('hero.title2_1')}<span className="gradient-text">{t('hero.title2_actions')}</span>{t('hero.title2_2')}<span className="text-blue-600">{t('hero.title2_answer')}</span>
+								{t('hero.title2_1')}<span className="gradient-text">{t('hero.title2_actions')}</span>{t('hero.title2_2')}<span className="text-teal-500">{t('hero.title2_answer')}</span>
 							</h1>
 							<p className="text-lg sm:text-xl text-gray-600 leading-relaxed">{t('hero.description')}</p>
 							<div className="flex flex-col sm:flex-row gap-4">
