@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { analytics } from '@/lib/analytics';
 
 type Language = 'zh' | 'en';
 
@@ -24,8 +25,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setLanguage = (lang: Language) => {
+    const previousLanguage = language;
     setLanguageState(lang);
     localStorage.setItem('language', lang);
+
+    // Track language switch (only if language actually changed)
+    if (previousLanguage !== lang && typeof window !== 'undefined') {
+      const currentPage = window.location.pathname;
+      analytics.trackLanguageSwitch(previousLanguage, lang, currentPage);
+    }
   };
 
   const t = (key: string): string => {
