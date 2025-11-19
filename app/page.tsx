@@ -51,13 +51,13 @@ export default function Home() {
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center text-white">
 						<div>
 							<div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-								800+<span className="text-xl sm:text-2xl">{language === 'zh' ? '人' : ''}</span>
+								100+<span className="text-xl sm:text-2xl">{language === 'zh' ? '人' : ''}</span>
 							</div>
 							<div className="text-sm sm:text-base md:text-lg opacity-90">{t('stats.migrants')}</div>
 						</div>
 						<div>
 							<div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-								150+<span className="text-xl sm:text-2xl">{language === 'zh' ? '人' : ''}</span>
+								20+<span className="text-xl sm:text-2xl">{language === 'zh' ? '人' : ''}</span>
 							</div>
 							<div className="text-sm sm:text-base md:text-lg opacity-90">{t('stats.volunteers')}</div>
 						</div>
