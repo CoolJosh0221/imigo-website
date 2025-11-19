@@ -19,7 +19,7 @@ export default function RootLayout({
 		<html lang="zh-TW" className="smooth-scroll">
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
 			</head>
 			<body className="antialiased bg-gradient-to-b from-orange-50 via-white to-blue-50">

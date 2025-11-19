@@ -49,10 +49,21 @@ export default function BlogPageClient({
   const upcoming = upcomingEvents.length > 0 ? upcomingEvents : initialEvents.filter(e => new Date(e.date) >= new Date());
   const past = pastEvents.length > 0 ? pastEvents : initialEvents.filter(e => new Date(e.date) < new Date());
 
-  // Filter posts by selected tag
-  const filteredPosts = selectedTag
+  // Filter posts by selected tag and active tab
+  let filteredPosts = selectedTag
     ? posts.filter(post => post.tags.some(tag => tag.toLowerCase() === selectedTag.toLowerCase()))
     : posts;
+
+  // In 'blog' tab, exclude events (posts with id starting with 'event-')
+  if (activeTab === 'blog') {
+    filteredPosts = filteredPosts.filter(post => !post.id.startsWith('event-'));
+  }
+
+  // In 'events' tab, exclude past events from posts section since they're shown separately
+  if (activeTab === 'events') {
+    const pastEventIds = new Set(past.map(e => `event-${e.id}`));
+    filteredPosts = filteredPosts.filter(post => !pastEventIds.has(post.id));
+  }
 
   const handleTagClick = (tag: string) => {
     setSelectedTag(selectedTag === tag ? null : tag);
@@ -328,14 +339,18 @@ export default function BlogPageClient({
         </section>
       )}
 
-      {/* Past Events */}
+      {/* Past Events - displayed as clickable blog posts */}
       {(activeTab === 'all' || activeTab === 'events') && pastEvents.length > 0 && (
         <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold mb-8">{language === 'zh' ? '過往活動' : 'Past Events'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pastEvents.map((event) => (
-                <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-lg opacity-75">
+                <Link
+                  key={event.id}
+                  href={`/blog/event-${event.id}`}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover block"
+                >
                   {event.image && (
                     <div className="relative w-full h-48">
                       <Image
@@ -349,14 +364,34 @@ export default function BlogPageClient({
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       {getCategoryBadge(event.category)}
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-600">
                         {formatEventDate(event.date, language)}
                       </span>
                     </div>
                     <h3 className="text-xl font-bold mb-3">{event.title[language]}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{event.description[language]}</p>
+                    <p className="text-gray-600 mb-4 line-clamp-3">{event.description[language]}</p>
+                    {event.tags && event.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {event.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                        {event.tags.length > 3 && (
+                          <span className="text-xs px-2 py-1 text-gray-500">
+                            +{event.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">iMigo Team</span>
+                      <span className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
+                        {language === 'zh' ? '閱讀更多' : 'Read More'} →
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
