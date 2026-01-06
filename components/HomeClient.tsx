@@ -175,7 +175,7 @@ export default function HomeClient({ upcomingEvents }: HomeClientProps) {
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t('team.title')}</h2>
             <p className="text-lg sm:text-xl text-gray-600">{t('team.subtitle')}</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Team Members */}
             {[
               { initial: 'J', name: 'Josh', role: language === 'zh' ? 'AI 開發' : 'AI Dev', desc: language === 'zh' ? '模型訓練 | 數據分析' : 'Model Training | Data Analysis', isFounder: true },
