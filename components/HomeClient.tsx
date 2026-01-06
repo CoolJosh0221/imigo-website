@@ -178,12 +178,17 @@ export default function HomeClient({ upcomingEvents }: HomeClientProps) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Team Members */}
             {[
-              { initial: 'J', name: 'Josh', role: language === 'zh' ? 'AI 開發' : 'AI Dev', desc: language === 'zh' ? '模型訓練 | 數據分析' : 'Model Training | Data Analysis' },
-              { initial: 'C', name: 'Coco', role: language === 'zh' ? '溝通策略' : 'Communication Strategy', desc: language === 'zh' ? '國際辯論 | 權益保護' : 'Debate | Rights Protection' },
-              { initial: 'Q', name: 'Quentin', role: language === 'zh' ? '營運' : 'Operations', desc: language === 'zh' ? '商業策略 | 用戶研究' : 'Business Strategy | User Research' },
+              { initial: 'J', name: 'Josh', role: language === 'zh' ? 'AI 開發' : 'AI Dev', desc: language === 'zh' ? '模型訓練 | 數據分析' : 'Model Training | Data Analysis', isFounder: true },
+              { initial: 'C', name: 'Coco', role: language === 'zh' ? '溝通策略' : 'Communication Strategy', desc: language === 'zh' ? '國際辯論 | 權益保護' : 'Debate | Rights Protection', isFounder: true },
+              { initial: 'Q', name: 'Quentin', role: language === 'zh' ? '營運' : 'Operations', desc: language === 'zh' ? '商業策略 | 用戶研究' : 'Business Strategy | User Research', isFounder: true },
             ].map((member) => (
               <div key={member.name} className="bg-white rounded-2xl p-6 text-center shadow-lg card-hover">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 gradient-bg rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-lg">{member.initial}</div>
+                {member.isFounder && (
+                  <span className="inline-block px-3 py-1 mb-2 text-xs font-semibold text-amber-700 bg-amber-100 rounded-full">
+                    {language === 'zh' ? '創辦人' : 'Founder'}
+                  </span>
+                )}
                 <h3 className="text-lg sm:text-xl font-bold mb-2">{member.name}</h3>
                 <div className="text-orange-600 font-semibold mb-3 text-sm sm:text-base">{member.role}</div>
                 <p className="text-xs sm:text-sm text-gray-600">{member.desc}</p>
