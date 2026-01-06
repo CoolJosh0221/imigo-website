@@ -181,6 +181,7 @@ export default function HomeClient({ upcomingEvents }: HomeClientProps) {
               { initial: 'J', name: 'Josh', role: language === 'zh' ? 'AI 開發' : 'AI Dev', desc: language === 'zh' ? '模型訓練 | 數據分析' : 'Model Training | Data Analysis', isFounder: true },
               { initial: 'C', name: 'Coco', role: language === 'zh' ? '溝通策略' : 'Communication Strategy', desc: language === 'zh' ? '國際辯論 | 權益保護' : 'Debate | Rights Protection', isFounder: true },
               { initial: 'Q', name: 'Quentin', role: language === 'zh' ? '營運' : 'Operations', desc: language === 'zh' ? '商業策略 | 用戶研究' : 'Business Strategy | User Research', isFounder: true },
+              { initial: 'V', name: 'Vera', role: language === 'zh' ? '財務' : 'Finance', desc: language === 'zh' ? '預算控管 | 財務揭露' : 'Budget Control | Financial Disclosure' },
             ].map((member) => (
               <div key={member.name} className="bg-white rounded-2xl p-6 text-center shadow-lg card-hover">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 gradient-bg rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-lg">{member.initial}</div>
