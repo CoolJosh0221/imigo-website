@@ -1,10 +1,12 @@
 ---
-title: Blog Post Example
+title: >-
+  Blog Post Example Blog Post Example Blog Post Example Blog Post Example Blog
+  Post Example
 excerpt: This is an example blog post. You can add article excerpt here.
 author: iMigo Team
-date: 2025-01-15
+date: '2025-01-15'
 category: announcement
-image: https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=400&fit=crop
+image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=400&fit=crop'
 tags:
   - blog
   - example
