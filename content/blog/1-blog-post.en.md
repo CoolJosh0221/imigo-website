@@ -1,29 +1,30 @@
 ---
-title: >-
-  Blog Post Example Blog Post Example Blog Post Example Blog Post Example Blog
-  Post Example
-excerpt: This is an example blog post. You can add article excerpt here.
+title: 2026 YMUNT x iMigo
+excerpt: iMigo is incredibly honored to serve as a Nonprofit Partner for YMUNT!
 author: iMigo Team
-date: '2025-01-15'
-category: announcement
+date: '2026-03-13'
+category: news
 image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=400&fit=crop'
 tags:
   - blog
   - example
 ---
 
-# Blog Post Example
 
-This is example content for a blog post.
+# 🎉 iMigo × YMUNT — Multicultural Trivia Challenge
 
-## Content Section
+**iMigo** is incredibly honored to serve as a **Nonprofit Partner** for **YMUNT**!
 
-You can add detailed article content here.
+We have prepared a super fun **"Multicultural Trivia Challenge"** for everyone. Just come and take the challenge to win awesome prizes!
 
-- Item one
-- Item two
-- Item three
+🏆 **Answer all 10 questions correctly** to take home the **Grand Prize!**
 
-## Conclusion
+But don't worry — even if you only get a few right, we still have **participation prizes**. You definitely won't leave empty-handed!
 
-This is the conclusion section.
+Hurry over to the venue and put your cultural knowledge to the test!
+
+---
+
+📅 **Time:** Today (March 13), 19:15 – 20:15
+
+📍 **Location:** GIS NTU Convention Center
