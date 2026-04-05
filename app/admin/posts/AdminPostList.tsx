@@ -4,20 +4,18 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ta } from '@/lib/admin-i18n';
 import DeleteConfirm from '@/components/admin/DeleteConfirm';
-import { deletePost } from '@/lib/admin-actions';
+import { deletePost, togglePostStatus } from '@/lib/admin-actions';
 
 interface PostSummary {
-  id: string;
+  id: number;
   title: string;
+  titleZh: string;
   date: string;
   category: string;
-  enPath: string;
-  zhPath: string;
-  enSha: string;
-  zhSha: string;
+  status: string;
 }
 
-export default function AdminPostList({ posts, error }: { posts: PostSummary[]; error: string }) {
+export default function AdminPostList({ posts }: { posts: PostSummary[] }) {
   const { language } = useLanguage();
   const l = (key: string) => ta(key, language);
 
@@ -33,11 +31,7 @@ export default function AdminPostList({ posts, error }: { posts: PostSummary[]; 
         </Link>
       </div>
 
-      {error ? (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {error}
-        </div>
-      ) : posts.length === 0 ? (
+      {posts.length === 0 ? (
         <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-500">
           {l('posts.empty')}
         </div>
@@ -46,12 +40,29 @@ export default function AdminPostList({ posts, error }: { posts: PostSummary[]; 
           {posts.map((post) => (
             <div key={post.id} className="flex items-center justify-between px-6 py-4">
               <div>
-                <div className="font-medium text-gray-900">{post.title}</div>
+                <div className="font-medium text-gray-900">
+                  {language === 'zh' ? post.titleZh : post.title}
+                  {post.status === 'draft' && (
+                    <span className="ml-2 inline-block px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 rounded">
+                      {l('common.draft')}
+                    </span>
+                  )}
+                </div>
                 <div className="text-sm text-gray-500 mt-0.5">
                   {post.date} &middot; {post.category}
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => togglePostStatus(post.id, post.status === 'published' ? 'draft' : 'published')}
+                  className={`text-sm font-medium ${
+                    post.status === 'published'
+                      ? 'text-amber-600 hover:text-amber-800'
+                      : 'text-green-600 hover:text-green-800'
+                  }`}
+                >
+                  {post.status === 'published' ? l('common.unpublish') : l('common.publish')}
+                </button>
                 <Link
                   href={`/admin/posts/${post.id}/edit`}
                   className="text-orange-600 hover:text-orange-800 text-sm font-medium"
@@ -59,8 +70,8 @@ export default function AdminPostList({ posts, error }: { posts: PostSummary[]; 
                   {l('common.edit')}
                 </Link>
                 <DeleteConfirm
-                  title={post.title}
-                  onConfirm={() => deletePost(post.enPath, post.zhPath, post.enSha, post.zhSha)}
+                  title={language === 'zh' ? post.titleZh : post.title}
+                  onConfirm={() => deletePost(post.id)}
                 />
               </div>
             </div>

@@ -1,10 +1,10 @@
 import HomeClient from '@/components/HomeClient';
 import { getUpcomingEvents } from '@/lib/events';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
-export default function Home() {
-  const upcomingEvents = getUpcomingEvents(8);
+export default async function Home() {
+  const upcomingEvents = await getUpcomingEvents(8).catch(() => [] as Awaited<ReturnType<typeof getUpcomingEvents>>);
 
   return <HomeClient upcomingEvents={upcomingEvents} />;
 }

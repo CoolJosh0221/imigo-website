@@ -14,7 +14,7 @@ export function eventToBlogPost(event: Event): BlogPost {
   return {
     id: `event-${event.id}`,
     title: event.title,
-    excerpt: event.description, // Use description as excerpt
+    excerpt: event.description,
     content: event.content || {
       zh: `# ${event.title.zh}
 
@@ -42,15 +42,17 @@ ${event.registrationLink ? `[Register Now](${event.registrationLink})` : ''}`
 }
 
 // Get all events as blog posts
-export function getEventsAsPosts(): BlogPost[] {
-  const allEvents = getAllEvents();
+export async function getEventsAsPosts(): Promise<BlogPost[]> {
+  const allEvents = await getAllEvents();
   return allEvents.map(eventToBlogPost);
 }
 
 // Get all content (blog posts + events)
-export function getAllContent(): BlogPost[] {
-  const blogPosts = getBlogPosts();
-  const eventPosts = getEventsAsPosts();
+export async function getAllContent(): Promise<BlogPost[]> {
+  const [blogPosts, eventPosts] = await Promise.all([
+    getBlogPosts(),
+    getEventsAsPosts(),
+  ]);
 
   return [...blogPosts, ...eventPosts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -58,33 +60,36 @@ export function getAllContent(): BlogPost[] {
 }
 
 // Get recent content
-export function getRecentContent(limit?: number): BlogPost[] {
-  const content = getAllContent();
+export async function getRecentContent(limit?: number): Promise<BlogPost[]> {
+  const content = await getAllContent();
   return limit ? content.slice(0, limit) : content;
 }
 
 // Get all unique tags from all content
-export function getAllTags(): string[] {
-  const blogTags = getBlogTags();
-  const eventTags = new Set<string>();
-  const allEvents = getAllEvents();
+export async function getAllTags(): Promise<string[]> {
+  const [blogTags, allEvents] = await Promise.all([
+    getBlogTags(),
+    getAllEvents(),
+  ]);
 
-  allEvents.forEach(event => {
-    event.tags.forEach(tag => eventTags.add(tag));
+  const allTags = new Set([...blogTags]);
+  allEvents.forEach((event) => {
+    event.tags.forEach((tag) => allTags.add(tag));
   });
 
-  const allTags = new Set([...blogTags, ...eventTags]);
   return Array.from(allTags).sort();
 }
 
 // Get tag counts from all content
-export function getTagCounts(): Record<string, number> {
-  const blogTagCounts = getBlogTagCounts();
-  const tagCounts = { ...blogTagCounts };
-  const allEvents = getAllEvents();
+export async function getTagCounts(): Promise<Record<string, number>> {
+  const [blogTagCounts, allEvents] = await Promise.all([
+    getBlogTagCounts(),
+    getAllEvents(),
+  ]);
 
-  allEvents.forEach(event => {
-    event.tags.forEach(tag => {
+  const tagCounts = { ...blogTagCounts };
+  allEvents.forEach((event) => {
+    event.tags.forEach((tag) => {
       tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
   });
@@ -93,16 +98,17 @@ export function getTagCounts(): Record<string, number> {
 }
 
 // Get content by tag
-export function getContentByTag(tag: string): BlogPost[] {
-  const allContent = getAllContent();
-  return allContent.filter(post =>
-    post.tags.some(t => t.toLowerCase() === tag.toLowerCase())
+export async function getContentByTag(tag: string): Promise<BlogPost[]> {
+  const allContent = await getAllContent();
+  return allContent.filter((post) =>
+    post.tags.some((t) => t.toLowerCase() === tag.toLowerCase())
   );
 }
 
 // Get content by category
-export function getContentByCategory(category: BlogPost['category']): BlogPost[] {
-  return getAllContent().filter(post => post.category === category);
+export async function getContentByCategory(category: BlogPost['category']): Promise<BlogPost[]> {
+  const all = await getAllContent();
+  return all.filter((post) => post.category === category);
 }
 
 // Check if a post is an event
@@ -111,10 +117,10 @@ export function isEvent(postId: string): boolean {
 }
 
 // Get original event from a post ID
-export function getEventFromPostId(postId: string): Event | null {
+export async function getEventFromPostId(postId: string): Promise<Event | null> {
   if (!isEvent(postId)) return null;
 
   const eventId = postId.replace('event-', '');
-  const allEvents = getAllEvents();
-  return allEvents.find(event => event.id === eventId) || null;
+  const allEvents = await getAllEvents();
+  return allEvents.find((event) => event.id === eventId) || null;
 }

@@ -25,9 +25,10 @@ const t: Record<string, Record<Lang, string>> = {
   'dashboard.manage_posts': { en: 'Manage Posts', zh: '管理文章' },
   'dashboard.manage_events': { en: 'Manage Events', zh: '管理活動' },
   'dashboard.how_title': { en: 'How it works', zh: '運作方式' },
-  'dashboard.how_1': { en: 'Content is stored as markdown files in the GitHub repository.', zh: '內容以 Markdown 檔案儲存在 GitHub 存放庫中。' },
-  'dashboard.how_2': { en: 'Creating or editing content commits files via the GitHub API.', zh: '建立或編輯內容會透過 GitHub API 提交檔案。' },
-  'dashboard.how_3': { en: 'Vercel automatically redeploys the site when changes are pushed (~2 min).', zh: 'Vercel 會在推送變更後自動重新部署網站（約 2 分鐘）。' },
+  'dashboard.drafts': { en: 'drafts', zh: '草稿' },
+  'dashboard.how_1': { en: 'Content is stored in a Turso (SQLite) database.', zh: '內容儲存在 Turso（SQLite）資料庫中。' },
+  'dashboard.how_2': { en: 'Creating or editing content saves instantly to the database.', zh: '建立或編輯內容會即時儲存到資料庫。' },
+  'dashboard.how_3': { en: 'Published content is live immediately — no redeployment needed.', zh: '已發佈的內容會即時上線，無需重新部署。' },
   'dashboard.how_4': { en: 'Images are stored in Vercel Blob storage.', zh: '圖片儲存在 Vercel Blob 儲存空間。' },
 
   // Posts
@@ -55,6 +56,10 @@ const t: Record<string, Record<Lang, string>> = {
   'common.create_event': { en: 'Create Event', zh: '建立活動' },
   'common.update_event': { en: 'Update Event', zh: '更新活動' },
   'common.error': { en: 'Something went wrong', zh: '發生錯誤' },
+  'common.publish': { en: 'Publish', zh: '發佈' },
+  'common.unpublish': { en: 'Unpublish', zh: '取消發佈' },
+  'common.draft': { en: 'Draft', zh: '草稿' },
+  'common.published': { en: 'Published', zh: '已發佈' },
 
   // Editor fields
   'editor.metadata': { en: 'Metadata', zh: '中繼資料' },
@@ -84,6 +89,7 @@ const t: Record<string, Record<Lang, string>> = {
   'editor.image_type_error': { en: 'Please select an image file', zh: '請選擇圖片檔案' },
   'editor.image_size_error': { en: 'Image must be under 4.5MB', zh: '圖片必須小於 4.5MB' },
   'editor.upload_failed': { en: 'Upload failed', zh: '上傳失敗' },
+  'editor.status': { en: 'Status', zh: '狀態' },
 
   // Delete dialog
   'delete.confirm': { en: 'This will remove both EN and ZH files from the repository. This action cannot be undone.', zh: '這將從存放庫中移除英文和中文檔案。此操作無法復原。' },

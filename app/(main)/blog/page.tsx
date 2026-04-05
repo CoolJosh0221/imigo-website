@@ -2,12 +2,16 @@ import { getRecentContent, getAllTags, getTagCounts } from '@/lib/content';
 import { getUpcomingEvents, getPastEvents } from '@/lib/events';
 import BlogPageClient from '@/components/BlogPageClient';
 
-export default function BlogPage() {
-  const recentPosts = getRecentContent();
-  const upcomingEvents = getUpcomingEvents();
-  const pastEvents = getPastEvents(3);
-  const allTags = getAllTags();
-  const tagCounts = getTagCounts();
+export const dynamic = 'force-dynamic';
+
+export default async function BlogPage() {
+  const [recentPosts, upcomingEvents, pastEvents, allTags, tagCounts] = await Promise.all([
+    getRecentContent(),
+    getUpcomingEvents(),
+    getPastEvents(3),
+    getAllTags(),
+    getTagCounts(),
+  ]);
 
   return (
     <BlogPageClient

@@ -1,14 +1,18 @@
 import Link from 'next/link';
 import { getAllTags, getTagCounts } from '@/lib/content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'All Tags - iMigo',
   description: 'Browse content by tags',
 };
 
-export default function TagsPage() {
-  const tags = getAllTags();
-  const tagCounts = getTagCounts();
+export default async function TagsPage() {
+  const [tags, tagCounts] = await Promise.all([
+    getAllTags(),
+    getTagCounts(),
+  ]);
 
   // Sort tags by count (descending)
   const sortedTags = tags.sort((a, b) => (tagCounts[b] || 0) - (tagCounts[a] || 0));
@@ -26,7 +30,6 @@ export default function TagsPage() {
             <div className="flex flex-wrap gap-3">
               {sortedTags.map((tag) => {
                 const count = tagCounts[tag] || 0;
-                // Calculate size based on count for tag cloud effect
                 const sizeClass = count >= 5 ? 'text-2xl' : count >= 3 ? 'text-xl' : 'text-lg';
 
                 return (

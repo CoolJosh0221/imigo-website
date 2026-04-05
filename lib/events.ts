@@ -1,8 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-
-const eventsDirectory = path.join(process.cwd(), 'content/events');
+import { db } from './db';
+import { events } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export interface Event {
   id: string;
@@ -30,121 +28,59 @@ export interface Event {
   tags: string[];
 }
 
-interface EventMetadata {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  image?: string;
-  category: 'volunteer' | 'cultural' | 'training' | 'community';
-  registrationLink?: string;
-  tags: string[];
+function rowToEvent(row: typeof events.$inferSelect): Event {
+  return {
+    id: String(row.id),
+    title: { en: row.titleEn, zh: row.titleZh },
+    date: row.date,
+    time: row.time,
+    location: { en: row.locationEn, zh: row.locationZh },
+    description: { en: row.descriptionEn, zh: row.descriptionZh },
+    content: { en: row.contentEn, zh: row.contentZh },
+    image: row.image || undefined,
+    category: row.category as Event['category'],
+    registrationLink: row.registrationLink || undefined,
+    tags: JSON.parse(row.tags),
+  };
 }
 
-// Get all event IDs from the content directory
-export function getAllEventIds(): string[] {
-  if (!fs.existsSync(eventsDirectory)) {
-    return [];
-  }
-
-  const fileNames = fs.readdirSync(eventsDirectory);
-  const ids = new Set<string>();
-
-  fileNames.forEach((fileName) => {
-    // Extract ID from filename (e.g., "1-lunar-new-year.zh.md" -> "1")
-    const match = fileName.match(/^(\d+)-/);
-    if (match) {
-      ids.add(match[1]);
-    }
-  });
-
-  return Array.from(ids);
+// Get all event IDs (published only)
+export async function getAllEventIds(): Promise<string[]> {
+  const rows = await db.select({ id: events.id }).from(events).where(eq(events.status, 'published'));
+  return rows.map((r) => String(r.id));
 }
 
-// Get event by ID (reads both zh and en files)
-export function getEventById(id: string): Event | null {
-  try {
-    if (!fs.existsSync(eventsDirectory)) {
-      return null;
-    }
-
-    const zhFile = fs.readdirSync(eventsDirectory).find(f => f.startsWith(`${id}-`) && f.endsWith('.zh.md'));
-    const enFile = fs.readdirSync(eventsDirectory).find(f => f.startsWith(`${id}-`) && f.endsWith('.en.md'));
-
-    if (!zhFile || !enFile) {
-      return null;
-    }
-
-    const zhPath = path.join(eventsDirectory, zhFile);
-    const enPath = path.join(eventsDirectory, enFile);
-
-    const zhFileContents = fs.readFileSync(zhPath, 'utf8');
-    const enFileContents = fs.readFileSync(enPath, 'utf8');
-
-    const zhMatter = matter(zhFileContents);
-    const enMatter = matter(enFileContents);
-
-    const zhData = zhMatter.data as EventMetadata;
-    const enData = enMatter.data as EventMetadata;
-
-    return {
-      id,
-      title: {
-        zh: zhData.title,
-        en: enData.title,
-      },
-      date: zhData.date,
-      time: zhData.time,
-      location: {
-        zh: zhData.location,
-        en: enData.location,
-      },
-      description: {
-        zh: zhData.description,
-        en: enData.description,
-      },
-      content: {
-        zh: zhMatter.content,
-        en: enMatter.content,
-      },
-      image: zhData.image,
-      category: zhData.category,
-      registrationLink: zhData.registrationLink,
-      tags: zhData.tags,
-    };
-  } catch (error) {
-    console.error(`Error reading event ${id}:`, error);
-    return null;
-  }
+// Get event by ID
+export async function getEventById(id: string): Promise<Event | null> {
+  const row = await db.select().from(events).where(eq(events.id, Number(id))).get();
+  if (!row || row.status !== 'published') return null;
+  return rowToEvent(row);
 }
 
-// Get all events
-export function getAllEvents(): Event[] {
-  const ids = getAllEventIds();
-  const events = ids
-    .map(id => getEventById(id))
-    .filter((event): event is Event => event !== null);
-
-  return events;
+// Get all events (published only)
+export async function getAllEvents(): Promise<Event[]> {
+  const rows = await db.select().from(events).where(eq(events.status, 'published'));
+  return rows.map(rowToEvent);
 }
 
 // Get upcoming events
-export function getUpcomingEvents(limit?: number): Event[] {
-  const now = new Date();
-  const upcoming = getAllEvents()
-    .filter(event => new Date(event.date) >= now)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+export async function getUpcomingEvents(limit?: number): Promise<Event[]> {
+  const now = new Date().toISOString().split('T')[0];
+  const all = await getAllEvents();
+  const upcoming = all
+    .filter((event) => event.date >= now)
+    .sort((a, b) => a.date.localeCompare(b.date));
 
   return limit ? upcoming.slice(0, limit) : upcoming;
 }
 
 // Get past events
-export function getPastEvents(limit?: number): Event[] {
-  const now = new Date();
-  const past = getAllEvents()
-    .filter(event => new Date(event.date) < now)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+export async function getPastEvents(limit?: number): Promise<Event[]> {
+  const now = new Date().toISOString().split('T')[0];
+  const all = await getAllEvents();
+  const past = all
+    .filter((event) => event.date < now)
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   return limit ? past.slice(0, limit) : past;
 }
@@ -159,7 +95,7 @@ export function formatEventDate(dateString: string, language: 'zh' | 'en'): stri
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 }
