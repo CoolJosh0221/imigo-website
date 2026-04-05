@@ -7,9 +7,13 @@ import { ta } from '@/lib/admin-i18n';
 export default function DashboardClient({
   postCount,
   eventCount,
+  draftPostCount,
+  draftEventCount,
 }: {
   postCount: number;
   eventCount: number;
+  draftPostCount: number;
+  draftEventCount: number;
 }) {
   const { language } = useLanguage();
   const l = (key: string) => ta(key, language);
@@ -21,7 +25,12 @@ export default function DashboardClient({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="text-3xl font-bold text-orange-600">{postCount}</div>
-          <div className="text-sm text-gray-500 mt-1">{l('dashboard.posts')}</div>
+          <div className="text-sm text-gray-500 mt-1">
+            {l('dashboard.posts')}
+            {draftPostCount > 0 && (
+              <span className="ml-2 text-amber-600">+{draftPostCount} {l('dashboard.drafts')}</span>
+            )}
+          </div>
           <Link
             href="/admin/posts"
             className="inline-block mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium"
@@ -31,7 +40,12 @@ export default function DashboardClient({
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="text-3xl font-bold text-blue-600">{eventCount}</div>
-          <div className="text-sm text-gray-500 mt-1">{l('dashboard.events')}</div>
+          <div className="text-sm text-gray-500 mt-1">
+            {l('dashboard.events')}
+            {draftEventCount > 0 && (
+              <span className="ml-2 text-amber-600">+{draftEventCount} {l('dashboard.drafts')}</span>
+            )}
+          </div>
           <Link
             href="/admin/events"
             className="inline-block mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium"

@@ -6,30 +6,22 @@ import { ta } from '@/lib/admin-i18n';
 import MarkdownPreview from './MarkdownPreview';
 import ImageUploader from './ImageUploader';
 
+interface PostFormData {
+  slug: string;
+  author: string;
+  date: string;
+  category: string;
+  image: string;
+  tags: string[];
+  status: string;
+  en: { title: string; excerpt: string; content: string };
+  zh: { title: string; excerpt: string; content: string };
+}
+
 interface PostEditorProps {
   mode: 'create' | 'edit';
-  initialData?: {
-    id: string;
-    slug: string;
-    author: string;
-    date: string;
-    category: string;
-    image: string;
-    tags: string[];
-    en: { title: string; excerpt: string; content: string };
-    zh: { title: string; excerpt: string; content: string };
-  };
-  onSubmit: (data: {
-    id: string;
-    slug: string;
-    author: string;
-    date: string;
-    category: string;
-    image: string;
-    tags: string[];
-    en: { title: string; excerpt: string; content: string };
-    zh: { title: string; excerpt: string; content: string };
-  }) => Promise<void>;
+  initialData?: PostFormData;
+  onSubmit: (data: PostFormData) => Promise<void>;
 }
 
 const CATEGORIES = ['announcement', 'news', 'story', 'guide'];
@@ -43,13 +35,13 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState('');
 
-  const [id, setId] = useState(initialData?.id || '');
   const [slug, setSlug] = useState(initialData?.slug || '');
   const [author, setAuthor] = useState(initialData?.author || 'iMigo Team');
   const [date, setDate] = useState(initialData?.date || new Date().toISOString().split('T')[0]);
   const [category, setCategory] = useState(initialData?.category || 'announcement');
   const [image, setImage] = useState(initialData?.image || '');
   const [tagsStr, setTagsStr] = useState(initialData?.tags.join(', ') || '');
+  const [status, setStatus] = useState(initialData?.status || 'draft');
 
   const [enTitle, setEnTitle] = useState(initialData?.en.title || '');
   const [enExcerpt, setEnExcerpt] = useState(initialData?.en.excerpt || '');
@@ -60,7 +52,7 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
   const [zhContent, setZhContent] = useState(initialData?.zh.content || '');
 
   function handleSubmit() {
-    if (!id || !slug || !enTitle || !zhTitle) {
+    if (!slug || !enTitle || !zhTitle) {
       setError(l('editor.required'));
       return;
     }
@@ -69,13 +61,13 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
     startTransition(async () => {
       try {
         await onSubmit({
-          id,
           slug,
           author,
           date,
           category,
           image,
           tags: tagsStr.split(',').map((t) => t.trim()).filter(Boolean),
+          status,
           en: { title: enTitle, excerpt: enExcerpt, content: enContent },
           zh: { title: zhTitle, excerpt: zhExcerpt, content: zhContent },
         });
@@ -99,30 +91,17 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
         </div>
       )}
 
-      {/* Shared fields */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
         <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{l('editor.metadata')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{l('editor.post_id')}</label>
-            <input
-              type="text"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              disabled={mode === 'edit'}
-              placeholder="e.g. 5"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
-            />
-          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{l('editor.slug')}</label>
             <input
               type="text"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              disabled={mode === 'edit'}
               placeholder="e.g. my-blog-post"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
           <div>
@@ -165,19 +144,27 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{l('editor.status')}</label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="draft">{l('common.draft')}</option>
+              <option value="published">{l('common.published')}</option>
+            </select>
+          </div>
         </div>
         <ImageUploader onUpload={setImage} currentUrl={image} />
       </div>
 
-      {/* Language tabs */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div className="flex border-b border-gray-200">
           <button
             onClick={() => setTab('en')}
             className={`flex-1 px-4 py-3 text-sm font-medium ${
-              tab === 'en'
-                ? 'bg-orange-50 text-orange-700 border-b-2 border-orange-500'
-                : 'text-gray-500 hover:text-gray-700'
+              tab === 'en' ? 'bg-orange-50 text-orange-700 border-b-2 border-orange-500' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             English
@@ -185,9 +172,7 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
           <button
             onClick={() => setTab('zh')}
             className={`flex-1 px-4 py-3 text-sm font-medium ${
-              tab === 'zh'
-                ? 'bg-orange-50 text-orange-700 border-b-2 border-orange-500'
-                : 'text-gray-500 hover:text-gray-700'
+              tab === 'zh' ? 'bg-orange-50 text-orange-700 border-b-2 border-orange-500' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             中文
@@ -209,9 +194,7 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
               <input
                 type="text"
                 value={tab === 'en' ? enTitle : zhTitle}
-                onChange={(e) =>
-                  tab === 'en' ? setEnTitle(e.target.value) : setZhTitle(e.target.value)
-                }
+                onChange={(e) => tab === 'en' ? setEnTitle(e.target.value) : setZhTitle(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
@@ -219,9 +202,7 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
               <label className="block text-sm font-medium text-gray-700 mb-1">{l('editor.excerpt')}</label>
               <textarea
                 value={tab === 'en' ? enExcerpt : zhExcerpt}
-                onChange={(e) =>
-                  tab === 'en' ? setEnExcerpt(e.target.value) : setZhExcerpt(e.target.value)
-                }
+                onChange={(e) => tab === 'en' ? setEnExcerpt(e.target.value) : setZhExcerpt(e.target.value)}
                 rows={2}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
@@ -230,9 +211,7 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
               <label className="block text-sm font-medium text-gray-700 mb-1">{l('editor.content')}</label>
               <textarea
                 value={tab === 'en' ? enContent : zhContent}
-                onChange={(e) =>
-                  tab === 'en' ? setEnContent(e.target.value) : setZhContent(e.target.value)
-                }
+                onChange={(e) => tab === 'en' ? setEnContent(e.target.value) : setZhContent(e.target.value)}
                 rows={20}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
@@ -246,12 +225,8 @@ export default function PostEditor({ mode, initialData, onSubmit }: PostEditorPr
         </div>
       </div>
 
-      {/* Submit */}
       <div className="flex justify-end gap-3">
-        <a
-          href="/admin/posts"
-          className="px-6 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm font-medium"
-        >
+        <a href="/admin/posts" className="px-6 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm font-medium">
           {l('common.cancel')}
         </a>
         <button

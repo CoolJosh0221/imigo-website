@@ -3,11 +3,12 @@ import { getAllTags, getContentByTag } from '@/lib/content';
 import BlogPageClient from '@/components/BlogPageClient';
 
 export async function generateStaticParams() {
-  const tags = getAllTags();
-
-  return tags.map((tag) => ({
-    tag: tag,
-  }));
+  try {
+    const tags = await getAllTags();
+    return tags.map((tag) => ({ tag }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
@@ -25,13 +26,13 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
   const decodedTag = decodeURIComponent(tag);
 
   // Get all tags to validate this one exists
-  const allTags = getAllTags();
+  const allTags = await getAllTags();
   if (!allTags.some(t => t.toLowerCase() === decodedTag.toLowerCase())) {
     notFound();
   }
 
   // Get content with this tag
-  const posts = getContentByTag(decodedTag);
+  const posts = await getContentByTag(decodedTag);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-indigo-50">
